@@ -46,18 +46,18 @@ architecture top_basys3_arch of top_basys3 is
 		 );
 	end component elevator_controller_fsm;
 	
-	component TDM4 is
-		generic ( constant k_WIDTH : natural  := 4); -- bits in input and output
-        Port ( i_clk		: in  STD_LOGIC;
-           i_reset		: in  STD_LOGIC; -- asynchronous
-           i_D3 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
-		   i_D2 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
-		   i_D1 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
-		   i_D0 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
-		   o_data		: out STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
-		   o_sel		: out STD_LOGIC_VECTOR (3 downto 0)	-- selected data line (one-cold)
-	   );
-    end component TDM4;
+--	component TDM4 is
+--		generic ( constant k_WIDTH : natural  := 4); -- bits in input and output
+--        Port ( i_clk		: in  STD_LOGIC;
+--           i_reset		: in  STD_LOGIC; -- asynchronous
+--           i_D3 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+--		   i_D2 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+--		   i_D1 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+--		   i_D0 		: in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+--		   o_data		: out STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+--		   o_sel		: out STD_LOGIC_VECTOR (3 downto 0)	-- selected data line (one-cold)
+--	   );
+--    end component TDM4;
      
 	component clock_divider is
         generic ( constant k_DIV : natural := 2	); -- How many clk cycles until slow clock toggles
@@ -98,7 +98,7 @@ begin
 --  PORT MAP FOR the clock divider
     clkdiv_inst : clock_divider 		--instantiation of clock_divider to take 
         generic map ( k_DIV => 25000000 ) -- 1 Hz clock from 100 MHz
-        port map (						  
+        port map (					    	  
             i_clk   => clk,
             i_reset => clk_reset,
             o_clk => w_clk
@@ -108,7 +108,7 @@ begin
 	fsm_reset <= btnR or btnU;
 	clk_reset <= btnL or btnU;
 	-- LED 15 gets the FSM slow clock signal. The rest are grounded.
-	   led(14) <= '0';
+	   led(14 downto 0) <= (others => '0');
 	   led(15) <= w_clk;
 	-- leave unused switches UNCONNECTED. Ignore any warnings this causes.
 	
